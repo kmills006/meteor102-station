@@ -9,10 +9,7 @@ class App extends Component {
     const nameInput = ReactDOM.findDOMNode(this.refs.nameInput);
     const barNameInput = ReactDOM.findDOMNode(this.refs.barNameInput);
 
-    Bars.insert({
-      name: nameInput.value,
-      bar: barNameInput.value,
-    });
+    Meteor.call('insertFavoriteBar', nameInput.value, barNameInput.value);
 
     nameInput.value = '';
     barNameInput.value = '';
@@ -57,8 +54,9 @@ App.propTypes = {
   bars: React.PropTypes.array.isRequired,
 };
 
-
 export default createContainer(() => {
+  Meteor.subscribe('bars');
+
   return {
     bars: Bars.find().fetch(),
   };
